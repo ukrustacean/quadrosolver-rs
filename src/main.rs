@@ -2,7 +2,6 @@ use std::fmt::{Display, Formatter};
 use std::io::{BufRead, Write};
 use std::process::exit;
 
-#[derive(Debug)]
 enum FileModeError {
     FileDoesNotExist { filename: String },
     InvalidFileFormat,
@@ -35,7 +34,7 @@ impl Display for FileModeError {
 fn main() {
     let arg = std::env::args().skip(1).next();
 
-    let coefs = if let Some(filename) = arg {
+    let [a, b, c] = if let Some(filename) = arg {
         match file_mode(&filename) {
             Ok(c) => c,
             Err(e) => {
@@ -47,7 +46,23 @@ fn main() {
         interactive_mode()
     };
 
-    println!("{:?}", solve(coefs));
+    println!("Equation is: ({a}) x^2 + ({b}) x + ({c}) = 0");
+    let [x1, x2] = solve([a, b, c]);
+    
+    if x1.is_nan() || x2.is_nan() {
+        println!("There are 0 roots");
+        return;
+    }
+    
+    if x1 == x2 {
+        println!("There is 1 root");
+        println!("x = {x1}");
+        return;
+    }
+
+    println!("There are 2 roots");
+    println!("x1 = {x1}");
+    println!("x2 = {x2}");
 }
 
 fn file_mode(name: &str) -> Result<[f64; 3], FileModeError> {
