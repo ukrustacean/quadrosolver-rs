@@ -47,7 +47,7 @@ fn main() {
     };
 
     println!("Equation is: ({a}) x^2 + ({b}) x + ({c}) = 0");
-    let [x1, x2] = solve([a, b, c]);
+    let [x1, x2] = solve(a, b, c);
     
     if x1.is_nan() || x2.is_nan() {
         println!("There are 0 roots");
@@ -117,7 +117,7 @@ fn interactive_mode() -> [f64; 3] {
     values
 }
 
-fn solve([a, b, c]: [f64; 3]) -> [f64; 2] {
+fn solve(a: f64, b: f64, c: f64) -> [f64; 2] {
     let d = (b.powi(2) - 4.0 * a * c).sqrt();
     [(-b + d) / 2.0 / a, (-b - d) / 2.0 / a]
 }
