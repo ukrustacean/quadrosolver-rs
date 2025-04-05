@@ -38,3 +38,5 @@ it must obey the specified file format; the file can only contain a single
 piece of text matching the following regular expression:
 
 `^-?\d+(?:\.\d*)?\s-?\d+(?:\.\d*)?\s-?\d+(?:\.\d*)?\n$`
+
+https://www.rust-lang.org/
