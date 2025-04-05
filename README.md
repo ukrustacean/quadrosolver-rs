@@ -38,3 +38,10 @@ it must obey the specified file format; the file can only contain a single
 piece of text matching the following regular expression:
 
 `^-?\d+(?:\.\d*)?\s-?\d+(?:\.\d*)?\s-?\d+(?:\.\d*)?\n$`
+
+## Revert commit
+
+Link to [commit](https://github.com/ukrustacean/quadrosolver-rs/commit/0ce0b3e4b2ed970fd06bbe074c1740192e6788cb).\
+Its hash: `0ce0b3e4b2ed970fd06bbe074c1740192e6788cb`\
+Ignore this, it's needed for my university assignment.
+
