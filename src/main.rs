@@ -32,7 +32,7 @@ impl Display for FileModeError {
 }
 
 fn main() {
-    let arg = std::env::args().skip(1).next();
+    let arg = std::env::args().nth(1);
 
     let [a, b, c] = if let Some(filename) = arg {
         match file_mode(&filename) {
@@ -48,12 +48,12 @@ fn main() {
 
     println!("Equation is: ({a}) x^2 + ({b}) x + ({c}) = 0");
     let [x1, x2] = solve(a, b, c);
-    
+
     if x1.is_nan() || x2.is_nan() {
         println!("There are 0 roots");
         return;
     }
-    
+
     if x1 == x2 {
         println!("There is 1 root");
         println!("x = {x1}");
