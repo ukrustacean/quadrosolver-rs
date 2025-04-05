@@ -1,11 +1,82 @@
-fn main() {
-    println!("{:?}", solve(2., 1., -3.));
+use std::fmt::{Display, Formatter};
+use std::io::{BufRead, Write};
+use std::process::exit;
+
+#[derive(Debug)]
+enum FileModeError {
+    FileDoesNotExist { filename: String },
+    InvalidFileFormat,
+    FirstCoefficientIsZero,
 }
 
-fn solve(a: f64, b: f64, c: f64) -> [f64; 2] {
+impl Display for FileModeError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Error: ")?;
+        match self {
+            FileModeError::FileDoesNotExist { filename } => {
+                write!(f, "File does not exist: {}", filename)
+            }
+            FileModeError::InvalidFileFormat => write!(f, "Invalid file format"),
+            FileModeError::FirstCoefficientIsZero => write!(f, "First coefficient is zero"),
+        }
+    }
+}
+
+fn main() {
+    let arg = std::env::args().skip(1).next();
+
+    let coefs = if let Some(filename) = arg {
+        match file_mode(&filename) {
+            Ok(c) => c,
+            Err(e) => {
+                println!("{}", e);
+                exit(1);
+            }
+        }
+    } else {
+        interactive_mode()
+    };
+
+    println!("{:?}", solve(coefs));
+}
+
+fn file_mode(name: &str) -> Result<[f64; 3], FileModeError> {
+    todo!()
+}
+
+fn interactive_mode() -> [f64; 3] {
+    let names = ["a", "b", "c"];
+    let mut stdin = std::io::stdin().lock();
+    let mut stdout = std::io::stdout().lock();
+    let mut values = [0.0; 3];
+
+    for (idx, v) in values.iter_mut().enumerate() {
+        *v = loop {
+            write!(stdout, "{} = ", names[idx]).unwrap();
+            stdout.flush().unwrap();
+
+            let mut input = String::new();
+            stdin.read_line(&mut input).unwrap();
+            let input = input.trim();
+
+            let Ok(value) = input.parse() else {
+                writeln!(stdout, "Expected a real number, got `{}`", input).unwrap();
+                continue;
+            };
+
+            if idx == 0 && value == 0.0 {
+                writeln!(stdout, "First coefficient can't be zero").unwrap();
+                continue;
+            }
+
+            break value;
+        };
+    }
+
+    values
+}
+
+fn solve([a, b, c]: [f64; 3]) -> [f64; 2] {
     let d = (b.powi(2) - 4.0 * a * c).sqrt();
-    [
-        (-b + d) / 2.0 / a,
-        (-b - d) / 2.0 / a,
-    ]
+    [(-b + d) / 2.0 / a, (-b - d) / 2.0 / a]
 }
